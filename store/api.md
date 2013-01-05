@@ -4,8 +4,10 @@
 sha1(request_uri + accesskey + secretkey)
 ```
 __请求头：__
-App-Store-Auth: xxxx  签名
-App-Store-Access-Key: accesskey   用户的accesskey
+
+    App-Store-Auth: xxxx  签名
+
+    App-Store-Access-Key: accesskey   用户的accesskey
 
 # API说明
 ## 获取应用列表
