@@ -1,5 +1,14 @@
-## 提供的接口:
-### 获取应用列表
+# 认证方式
+通过验证签名进行授权。签名方法如下：
+```
+sha1(request_uri + accesskey + secretkey)
+```
+__请求头：__
+App-Store-Auth: xxxx  签名
+App-Store-Access-Key: accesskey   用户的accesskey
+
+# API说明
+## 获取应用列表
 /repos/list
 
 __返回格式：__
@@ -31,7 +40,7 @@ Array
 )
 ```
 
-### 获取单个应用的信息
+## 获取单个应用的信息
 /repos/app/info/appname
 
 __返回格式：__
@@ -51,16 +60,16 @@ Array
 )
 ```
 
-### 根据应用名搜索应用
+## 根据应用名搜索应用
 /repos/app/search/keyword
 
 返回格式与/repos/list 一样。
 
-### 下载应用安装包
+## 下载应用安装包
 /repos/app/download/appname
 
 
-## 错误码定义
+# 错误码定义
 * 参数错误： [4000, 5000)
 * 服务端错误：[5000, 6000)
 
