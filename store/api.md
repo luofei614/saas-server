@@ -13,7 +13,17 @@ __请求头：__
 ## 获取应用列表
 /repos/list
 
-__返回格式：__
+__请求头： __
+
+    Repo-Ver: local-version   如果服务端版本小于该版本，返回:
+```
+Array
+(
+    [errno] => 304
+    [errmsg] => No new apps
+)
+```
+    如果没有Repo-Ver头或者服务端版本号大于Repo-Ver，返回：
 ```
 Array
 (
@@ -22,6 +32,7 @@ Array
     [contact] => demo@example.com
     [icon] => http://sae.sina.com.cn/static/image/store/createapp.png
     [src-url] => http://repos.lajipk.com/apps/
+    [repo-ver] => 1
     [apps] => Array
         (
             [0] => Array
@@ -41,6 +52,8 @@ Array
 
 )
 ```
+
+__注：__ 客户端需要保存repo-ver以减少服务端数据返回量，加快响应。
 
 ## 获取单个应用的信息
 /repos/app/info/appname
