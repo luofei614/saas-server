@@ -13,9 +13,11 @@ __请求头：__
 ## 获取应用列表
 /repos/list
 
-__请求头： __
+__请求头：__
 
-    Repo-Ver: local-version   如果服务端版本小于该版本，返回:
+Repo-Ver: local-version   
+
+如果服务端版本小于该版本，返回:
 ```
 Array
 (
@@ -23,7 +25,7 @@ Array
     [errmsg] => No new apps
 )
 ```
-    如果没有Repo-Ver头或者服务端版本号大于Repo-Ver，返回：
+如果没有Repo-Ver头或者服务端版本号大于Repo-Ver，返回：
 ```
 Array
 (
