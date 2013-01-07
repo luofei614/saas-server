@@ -1,6 +1,8 @@
 <?php
 class AppApi extends Api{
 	public function lists($keyword='',$pagesize=20,$page=1){
+		$pagesize=intval($pagesize);
+		$page=intval($page);
 		$where="access<='{$this->user_level}'";
 		if(!empty($keyword))
 			$where.=" and name like '%".s($keyword)."%'";
@@ -21,7 +23,7 @@ class AppApi extends Api{
 		success($result);
 	}
 	public function info($appname){
-		$data=get_line("select name,icon,cat,services,runtime,mem,disk,cpu,license from apps where access<='{$this->user_level}' and name='{$appname}'");
+		$data=get_line("select name,icon,cat,services,runtime,mem,disk,cpu,license from apps where access<='{$this->user_level}' and name='".s($appname)."'");
 		if(empty($data)){
 			error(5005,'Apps not found');
 		}
@@ -31,7 +33,7 @@ class AppApi extends Api{
 		$this->lists($keyword,$pagesize,$page);
 	}
 	public function download($appname){
-		$src=get_var("select src from apps where access<='{$this->user_level}' and name='{$appname}'");
+		$src=get_var("select src from apps where access<='{$this->user_level}' and name='".s($appname)."'");
 		if(!$src){
 			error(5005,'Apps not found');
 		}
