@@ -1,0 +1,12 @@
+[ 2013-01-07T10:40:26+08:00 ]You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sdfsdf' at line 1
+[ 2013-01-07T10:43:37+08:00 ]Unknown column 'id' in 'where clause'
+[ 2013-01-07T10:43:38+08:00 ]Unknown column 'id' in 'where clause'
+[ 2013-01-07T15:22:50+08:00 ]Unknown column 'cup' in 'field list'
+[ 2013-01-07T15:23:03+08:00 ]Unknown column 'cup' in 'field list'
+[ 2013-01-07T15:29:07+08:00 ]Unknown column 'cup' in 'field list'[sql:select name,icon,cat,services,runtime,mem,disk,cup,license from apps where access<='0']
+[ 2013-01-07T15:30:49+08:00 ]Unknown column 'license' in 'field list'[sql:select name,icon,cat,services,runtime,mem,disk,cpu,license from apps where access<='0']
+[ 2013-01-07T16:52:29+08:00 ]You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-20,20' at line 1[sql:select name,icon,cat,services,runtime,mem,disk,cpu,liscense from apps where access<='0' and name like '%wordpresspage%' limit -20,20]
+[ 2013-01-07T16:53:48+08:00 ]You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-20,20' at line 1[sql:select name,icon,cat,services,runtime,mem,disk,cpu,liscense from apps where access<='0' and name like '%wordpre\\%' limit -20,20]
+[ 2013-01-07T16:54:10+08:00 ]You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-20,20' at line 1[sql:select name,icon,cat,services,runtime,mem,disk,cpu,liscense from apps where access<='0' and name like '%wordpre\\%' limit -20,20]
+[ 2013-01-07T17:14:16+08:00 ]Unknown column 'license' in 'field list'[sql:select name,icon,cat,services,runtime,mem,disk,cpu,license from apps where access<='0' and name='wordpress']
+[ 2013-01-07T17:14:21+08:00 ]Unknown column 'license' in 'field list'[sql:select name,icon,cat,services,runtime,mem,disk,cpu,license from apps where access<='0' and name='wordpress']

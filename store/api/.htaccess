@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+#如果你的环境不支持pathinfo，你可以 rewrite到 index.php?s=/$1
+RewriteRule ^(.*)$ index.php/$1
