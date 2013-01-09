@@ -1,9 +1,20 @@
 <?php
+/**
+ * 核心函数文件
+ */
+
+
+/**
+ * app_run ，在入口文件中调用，实现单一入口，路由解析，参数绑定 
+ * 
+ * @access public
+ * @return void
+ */
 function app_run(){
 	//加载Api基类
 	require_once ROOT.'lib/Api.class.php';
 	//解析URL,如果用户环境不支持PATHINFO，可以用传递s变量
-	if(!isset($_GET['s']) && !isset($_SERVER['PATH_INFO'])) error(40004,'Api Not Found');
+	if(!isset($_GET['s']) && !isset($_SERVER['PATH_INFO'])) error(4004,'Api Not Found');
     $pathinfo=isset($_GET['s'])?$_GET['s']:$_SERVER['PATH_INFO'];	
 	define('REQUEST_URI',$pathinfo);
 	$pathinfo=ltrim($pathinfo,'/');
@@ -18,7 +29,7 @@ function app_run(){
 		}
 	}	
 	$paths=explode('/',$pathinfo);
-	if(count($paths)<2) error(40004,'Api Not Found');
+	if(count($paths)<2) error(4004,'Api Not Found');
 	$module=ucfirst(strtolower(basename(array_shift($paths))));
 	$action=array_shift($paths);
 	$count_paths=count($paths);
@@ -32,11 +43,11 @@ function app_run(){
 	if(is_file(ROOT.'lib/'.$module.'Api.class.php'))
 		require ROOT.'lib/'.$module.'Api.class.php';
 	else
-		error(40004,'Api Not Found');
+		error(4004,'Api Not Found');
 	$class_name=$module.'Api';
     $class=new $class_name;
 	if(!method_exists($class,$action)){
-		error(40004,'Api Not Found');
+		error(4004,'Api Not Found');
 	}
 	//参数绑定
 	$method=new ReflectionMethod($class,$action);
@@ -56,7 +67,7 @@ function app_run(){
 				}elseif($param->isDefaultValueAvailable()){
 					$args[] = $param->getDefaultValue();
 				}else{
-					error(40003,'parameter ['.$name.'] must be non-empty');
+					error(4003,'Parameter ['.$name.'] must be non-empty');
 				}
 			}
             $method->invokeArgs($class,$args);
@@ -64,11 +75,25 @@ function app_run(){
 			$method->invoke($class);
 		}	
 	}else{
-		error(40004,'Api Not Found');
+		error(4004,'Api Not Found');
 	}
 }
-//获得配置项
+/**
+ * 配置函数，应用获取或设置配置 
+ * 
+ * @param string $name 配置项名称 
+ * @param mixed $value 配置项的值（如果这个参数不为空则会设置配置项，如果为空为获取配置项） 
+ * @access public
+ * @return mixed|null  如果是获取配置项，返回配置项的值
+ */
 function c($name,$value=null){
+	/**
+	 * _config 
+	 * 
+	 * @static
+	 * @var mixed
+	 * @access protected
+	 */
 	static $_config=null;
 	if(is_null($_config)) $_config=require ROOT.'config.php';
 	if(!is_null($value)){
@@ -77,12 +102,34 @@ function c($name,$value=null){
 	}
 	return isset($_config[$name])?$_config[$name]:null;
 }
+/**
+ * 显示接口错误 
+ * 
+ * @param int $errno 错误码 
+ * @param string $errmsg 错误信息
+ * @access public
+ * @return void
+ */
 function error($errno,$errmsg){
 	exit(json_encode(array('errno'=>$errno,'errmsg'=>$errmsg)));
 }
+/**
+ * 显示接口结果 
+ * 
+ * @param mixed $data 接口返回的数据 
+ * @access public
+ * @return void
+ */
 function success($data){
 	exit(json_encode(array_merge(array('errno'=>0),$data)));
 }
+/**
+ * 判断数据是否为一个序列化的数据
+ * 
+ * @param string $data 
+ * @access public
+ * @return void
+ */
 function is_serialized( $data ) {
          $data = trim( $data );
          if ( 'N;' == $data )
@@ -105,10 +152,14 @@ function is_serialized( $data ) {
          }
          return false;
 }
-// db functions
+/**
+ * 链接数据库 
+ * 
+ * @access public
+ * @return void
+ */
 function db()
 {
-	static $_link=null;
 	if(!is_null($_link)) return $_link;
 	if(!extension_loaded('mysqli')) db_error('not support mysqli');
 	$host=c('DB_HOST');
@@ -121,6 +172,13 @@ function db()
 	return $_link;
 }
 
+/**
+ * 数据库执行错误时的处理方法,接口返回5000错误， 详细的错误信息可以通过日志查询 
+ * 
+ * @param string $errmsg 
+ * @access public
+ * @return void
+ */
 function db_error($errmsg=''){
 	if(empty($errmsg)){
 		$errmsg=db()->error;
@@ -131,6 +189,13 @@ function db_error($errmsg=''){
 	error(5000,'Mysql Error');
 }
 
+/**
+ * 安全过滤 
+ * 
+ * @param mixed $str 
+ * @access public
+ * @return void
+ */
 function s($str)
 {
 	return db()->real_escape_string($str);
@@ -139,6 +204,13 @@ function s($str)
 
 
 
+/**
+ * 执行sql语句获得数据集合 
+ * 
+ * @param string $sql sql语句 
+ * @access public
+ * @return void
+ */
 function get_data($sql){
 	$GLOBALS['last_sql']=$sql;
 	if(!$query=db()->query($sql)){
@@ -155,12 +227,26 @@ function get_data($sql){
 	return $result;
 }
 
+/**
+ * 执行sql语句获得一条数据 
+ * 
+ * @param string $sql 
+ * @access public
+ * @return void
+ */
 function get_line( $sql)
 {
     $data = get_data( $sql);
     return @reset($data);
 }
 
+/**
+ * 执行sql语句获得一列数据 
+ * 
+ * @param string $sql 
+ * @access public
+ * @return void
+ */
 function get_col($sql){
 
     $data=get_data($sql);
@@ -171,6 +257,13 @@ function get_col($sql){
     return $ret;
 }
 
+/**
+ * 执行sql语句，获得单个字段值
+ * 
+ * @param string $sql 
+ * @access public
+ * @return void
+ */
 function get_var( $sql)
 {
     $data = get_line( $sql);
@@ -178,6 +271,13 @@ function get_var( $sql)
 }
 
 
+/**
+ * 运行sql语句，应用执行删除，插入等操作
+ * 
+ * @param string $sql 
+ * @access public
+ * @return void
+ */
 function run_sql($sql)
 {
 	$GLOBALS['last_sql']=$sql;
