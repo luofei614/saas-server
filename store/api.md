@@ -102,12 +102,12 @@ Aarry
 __返回字段说明：__ src 下载地址
 # 错误码定义
 * 参数错误： [4000, 5000)
-4000  The header App-Store-Auth or App-Store-Access-Key is empty  请求时没有携带 App-Store-Auth 或 App-Store-Access-Key 的header。
-4001  Access Key does not exist   请求时携带的Access Key错误，数据库中查不到。
-4002  Auth error 签名错误
-4003  Paramter [xxx] must be non-empty  必传参数为空 
-4004  Api Not Found   请求地址不正确
+* 4000  The header App-Store-Auth or App-Store-Access-Key is empty  请求时没有携带 App-Store-Auth 或 App-Store-Access-Key 的header。
+* 4001  Access Key does not exist   请求时携带的Access Key错误，数据库中查不到。
+* 4002  Auth error 签名错误
+* 4003  Paramter [xxx] must be non-empty  必传参数为空 
+* 4004  Api Not Found   请求地址不正确
 * 服务端错误：[5000, 6000)
-5000 Mysql Error  数据库出错， 具体错误可以在日志中查到
-5005 Apps not found  没有找到相关应用
+* 5000 Mysql Error  数据库出错， 具体错误可以在日志中查到
+* 5005 Apps not found  没有找到相关应用
 
